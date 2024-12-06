@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "car-manager"
+version = "0.1.0"
+description = ""
+authors = ["Eduard Komarov <rango.adik@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.4"
+djangorestframework = "^3.15.2"
+psycopg2 = "^2.9.10"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
