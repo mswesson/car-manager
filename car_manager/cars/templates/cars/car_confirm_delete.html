@@ -1,0 +1,20 @@
+{% extends "cars/base.html" %}
+
+{% block title %}
+  Confirm delete
+{% endblock title %}
+
+{% block body %}
+<h1 class="detail-title">Confirm the deletion</h1>
+<h2 class="detail-year">Do you really want to delete the card?</h2>
+<div class="row justify-content-center">
+  <div class="col-md-2 d-flex">
+    <button type="submit" class="btn btn-secondary btn-confirm">
+      <a class="button-link" href="{% url 'cars:cars_detail' pk=object.pk %}">Cancel</a>
+    </button>
+    <form action="{% url 'cars:cars_delete' pk=object.pk %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+{% endblock body %}

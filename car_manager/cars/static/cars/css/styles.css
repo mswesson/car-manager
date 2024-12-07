@@ -1,0 +1,49 @@
+h1 {
+    text-align: center;
+    margin: 45px 0;
+}
+
+.error-message {
+    text-align: center;
+}
+
+.forms {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.detail-title {
+    margin: 45px 0 0 0;
+}
+
+.detail-year {
+    text-align: center !important;
+    color: rgb(84, 84, 84) !important;
+    font-size: 20px;
+    margin: 5px 0 20px;
+}
+
+.car-info {
+    margin: 0 auto;
+}
+
+.comments {
+    margin-top: 45px;
+}
+
+.button-link {
+    color: white !important;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    margin: 0;
+}
+
+.btn {
+    margin-top: 4px;
+}
+
+.btn-confirm {
+    margin: 4px;
+}

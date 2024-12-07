@@ -1,0 +1,62 @@
+{% extends "cars/base.html" %}
+
+{% block title %}
+Create car
+{% endblock title %}
+
+{% block body %}
+<h1>Create car</h1>
+
+<div class="forms">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Car brand</label>
+      <input name="make" type="text" class="form-control {% if form.make.errors %}is-invalid{% endif %}" id="make"
+        placeholder="Enter the make of the car" value="{{ form.make.value|default:'' }}">
+      {% if form.make.errors %}
+      <div class="invalid-feedback">
+        {{ form.make.errors.0 }}
+      </div>
+      {% endif %}
+
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Car model</label>
+      <input name="model" type="text" class="form-control {% if form.model.errors %}is-invalid{% endif %}" id="model"
+        placeholder="Enter the car model" value="{{ form.model.value|default:'' }}">
+      {% if form.model.errors %}
+      <div class="invalid-feedback">
+        {{ form.model.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Year of release</label>
+      <input name="year" type="text" class="form-control {% if form.year.errors %}is-invalid{% endif %}" id="year"
+        placeholder="Enter the year of manufacture of the car" , value="{{ form.year.value|default:'' }}">
+      {% if form.year.errors %}
+      <div class="invalid-feedback">
+        {{ form.year.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description of the car</label>
+      <input name="description" type="text" class="form-control {% if form.description.errors %}is-invalid{% endif %}"
+        id="description" placeholder="Enter a description of the car" value="{{ form.description.value|default:'' }}">
+      {% if form.description.errors %}
+      <div class="invalid-feedback">
+        {{ form.description.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+</div>
+{% endblock body %}

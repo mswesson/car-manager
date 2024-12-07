@@ -18,15 +18,17 @@ class Car(models.Model):
     - owner (внешний ключ на пользователя, который создал запись)
     """
 
-    make = models.CharField(max_length=100, null=False, blank=False)
-    model = models.CharField(max_length=100, null=False, blank=False)
+    make = models.CharField(max_length=20, null=False, blank=False)
+    model = models.CharField(max_length=20, null=False, blank=False)
     year = models.IntegerField(
         validators=[
             MinValueValidator(1950),
             MaxValueValidator(timezone.now().year),
         ],
     )
-    description = models.TextField(max_length=2000, null=True, blank=True)
+    description = models.TextField(
+        max_length=2000, null=True, blank=True, default=""
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, null=False, blank=True
     )
@@ -34,6 +36,11 @@ class Car(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="cars"
     )
+
+    def description_short(self):
+        if len(self.description) <= 155:
+            return self.description
+        return self.description[:155] + "..."
 
 
 class CarComment(models.Model):

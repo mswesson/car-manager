@@ -1,0 +1,74 @@
+{% extends "cars/base.html" %}
+
+{% block title %}
+{{ object.make }} {{ object.model }} - {{ object.year }}
+{% endblock title %}
+
+{% block body %}
+
+<h1 class="detail-title">{{ object.make }} {{ object.model }}</h1>
+<h2 class="detail-year">{{ object.year }}</h2>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <p>The creator of the car card {{ object.owner }}</p>
+    <p>{{ object.description }}</p>
+    <div class="buttons">
+      
+      <button type="submit" class="btn btn-primary">
+        <a class="button-link" href="{% url 'cars:cars_list' %}">Back</a>
+      </button>
+
+      <button type="submit" class="btn btn-primary">
+        <a class="button-link" href="{% url 'cars:cars_update' pk=object.pk %}">Update</a>
+      </button>
+
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Delete
+      </button>
+      
+      <button type="submit" class="btn btn-primary">
+        <a class="button-link" href="#">Add coment</a>
+      </button>
+      
+    </div>
+
+    <div class="comments">
+      <h4>Comments:</h3>
+        {% if not object.comments.all %}
+        <p>No coments yet</p>
+        {% else %}
+        {% for comment in object.comments.all %}
+        <div>
+          <p>{{ comment.content }}</p>
+          <p>{{ comment.create_at }}</p>
+          <p>{{ comment.author }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm the deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete the card?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form action="{% url 'cars:cars_delete' pk=object.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
