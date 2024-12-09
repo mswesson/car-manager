@@ -7,8 +7,10 @@ Cars
 {% block body %}
 <h1>Cars</h1>
 <div class="btn-logout">
-  <button type="button" class="btn btn-primary">My profile</button>
-  <button type="button" class="btn btn-primary">Logout</button>
+  <form action="{% url 'myauth:logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Logout</button>
+  </form>
 </div>
 
 {% if not object_list %}

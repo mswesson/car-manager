@@ -1,0 +1,39 @@
+{% extends "cars/base.html" %}
+
+{% block title %}
+  Register
+{% endblock title %}
+
+{% block body %}
+<h1>User Login</h1>
+
+<div class="forms">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input name="username" type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="username"
+        placeholder="Enter username" value="{{ form.username.value|default:'' }}">
+      {% if form.username.errors %}
+      <div class="invalid-feedback">
+        {{ form.username.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input name="password" type="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" id="password"
+        placeholder="Enter password" value="{{ form.password.value|default:'' }}">
+      {% if form.password.errors %}
+      <div class="invalid-feedback">
+        {{ form.password.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+{% endblock body %}
