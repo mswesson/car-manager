@@ -6,6 +6,10 @@ Cars
 
 {% block body %}
 <h1>Cars</h1>
+<div class="btn-logout">
+  <button type="button" class="btn btn-primary">My profile</button>
+  <button type="button" class="btn btn-primary">Logout</button>
+</div>
 
 {% if not object_list %}
 <h2 class="error-message">Cars are missing</h2>

@@ -10,10 +10,9 @@
 <h2 class="detail-year">{{ object.year }}</h2>
 <div class="row justify-content-center">
   <div class="col-md-6">
-    <p>The creator of the car card {{ object.owner }}</p>
-    <p>{{ object.description }}</p>
+    <div class="car-description">{{ object.description }}</div>
+    <p>Author <b>{{ object.owner }}</b></p>
     <div class="buttons">
-      
       <button type="submit" class="btn btn-primary">
         <a class="button-link" href="{% url 'cars:cars_list' %}">Back</a>
       </button>
@@ -25,11 +24,10 @@
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Delete
       </button>
-      
-      <button type="submit" class="btn btn-primary">
-        <a class="button-link" href="#">Add coment</a>
+
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">
+        Add comment
       </button>
-      
     </div>
 
     <div class="comments">
@@ -37,14 +35,66 @@
         {% if not object.comments.all %}
         <p>No coments yet</p>
         {% else %}
-        {% for comment in object.comments.all %}
-        <div>
-          <p>{{ comment.content }}</p>
-          <p>{{ comment.create_at }}</p>
-          <p>{{ comment.author }}</p>
+        {% for comment in page_obj %}
+        <div class="comment-block">
+          <p class="comment-author"><b>{{ comment.author }}</b></p>
+          <p class="comment-content">{{ comment.content }}</p>
+          <p class="comment-date">{{ comment.created_at }}</p>
+          {% if comment.author == request.user %}
+          <div class="d-flex">
+            <form action="{% url 'cars:comments_cars_delete' pk=comment.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary btn-sm">Delete</button>
+            </form>
+            <button type="button" class="btn btn-primary btn-sm d-flex-btn" data-bs-toggle="modal"
+              data-bs-target="#updateCommentModal" data-comment-content="{{ comment.content }}" 
+              data-comment-id="{{ comment.pk }}">
+              Update
+            </button>
+          </div>
+          {% endif %}
         </div>
         {% endfor %}
         {% endif %}
+
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}"
+                aria-label="Previous">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for page_num in page_obj.paginator.page_range %}
+            {% if page_num == page_obj.number %}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">{{ page_num }}</span>
+            </li>
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_num }}&search={{ request.GET.search }}">{{ page_num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}"
+                aria-label="Next">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+
     </div>
   </div>
 </div>
@@ -70,5 +120,83 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Adding a comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'cars:comments_cars_create' pk=object.pk %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="exampleTextarea" class="form-label">Your Comment</label>
+            <textarea name="content" class="form-control" id="exampleTextarea" rows="4"
+              placeholder="Enter the comment text"></textarea>
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary btn-footer-add-comment"
+              data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="#" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="exampleTextarea" class="form-label">Your Comment</label>
+            <textarea name="content" class="form-control" id="exampleTextarea" rows="4"
+              placeholder="Enter the comment text">{{ comment.content }}</textarea>
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary btn-footer-add-comment"
+              data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const updateCommentModal = document.getElementById('updateCommentModal');
+    
+    updateCommentModal.addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget; 
+      
+      const commentContent = button.getAttribute('data-comment-content');
+      const commentId = button.getAttribute('data-comment-id');
+  
+      const textarea = updateCommentModal.querySelector('#exampleTextarea');
+      textarea.value = commentContent;
+
+      const form = updateCommentModal.querySelector('form');
+      form.action = '{% url "cars:comments_cars_update" pk=0 %}'.replace('0', commentId);
+    });
+  });
+  </script>
 
 {% endblock body %}

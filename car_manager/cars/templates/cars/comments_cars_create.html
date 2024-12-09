@@ -1,0 +1,29 @@
+{% extends "cars/base.html" %}
+
+{% block title %}
+Create car
+{% endblock title %}
+
+{% block body %}
+<h1>Create comment</h1>
+
+<div class="forms">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Content</label>
+      <input name="content" type="text" class="form-control {% if form.content.errors %}is-invalid{% endif %}" id="content"
+        placeholder="Enter the make of the car" value="{{ form.content.value|default:'' }}">
+      {% if form.content.errors %}
+      <div class="invalid-feedback">
+        {{ form.content.errors.0 }}
+      </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+</div>
+
+{% endblock body %}

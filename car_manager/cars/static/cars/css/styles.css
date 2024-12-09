@@ -1,6 +1,10 @@
 h1 {
     text-align: center;
-    margin: 45px 0;
+    margin: 25px 0 0;
+}
+
+body {
+    min-width: 200px;
 }
 
 .error-message {
@@ -13,7 +17,7 @@ h1 {
 }
 
 .detail-title {
-    margin: 45px 0 0 0;
+    margin: 25px 0 5px;
 }
 
 .detail-year {
@@ -36,14 +40,39 @@ h1 {
     text-decoration: none;
 }
 
-.btn-secondary {
+.btn {
+    margin: 3px 1px !important;
+}
+
+.btn-footer-add-comment {
+    margin: 3px 4px !important;
+}
+
+.comment-block {
+    margin-bottom: 40px;
+}
+
+.comment-author, .comment-content, .comment-date {
     margin: 0;
 }
 
-.btn {
-    margin-top: 4px;
+.comment-date {
+    color: gray;
 }
 
-.btn-confirm {
-    margin: 4px;
+.d-flex-btn {
+    margin-left: 4px !important;
+}
+
+.buttons {
+    margin-top: 40px;
+}
+
+.car-description {
+    white-space: pre-line;
+    margin: 0 0 10px;
+}
+
+.btn-logout {
+    margin: 0 0 10px !important;
 }

@@ -37,6 +37,9 @@ class Car(models.Model):
         User, on_delete=models.CASCADE, related_name="cars"
     )
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def description_short(self):
         if len(self.description) <= 155:
             return self.description
@@ -64,3 +67,6 @@ class CarComment(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="comments"
     )
+
+    class Meta:
+        ordering = ["-created_at"]
