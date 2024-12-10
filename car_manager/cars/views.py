@@ -19,7 +19,7 @@ from .forms import CarForm, CommentCarForm
 # Car
 
 
-class CarsListView(ListView):
+class CarsListView(LoginRequiredMixin, ListView):
     model = Car
     template_name = "cars/cars_list.html"
     paginate_by = 9
@@ -72,7 +72,7 @@ class CarsDeleteView(LoginRequiredMixin, DeleteView):
 # CarComment
 
 
-class CarCommentCreateView(CreateView):
+class CarCommentCreateView(LoginRequiredMixin, CreateView):
     model = CarComment
     template_name = "cars/comments_cars_create.html"
     form_class = CommentCarForm
