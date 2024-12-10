@@ -1,7 +1,5 @@
 from django.contrib import admin
-from django.contrib import admin
 from .models import Car, CarComment
-from django.utils.html import format_html
 
 
 @admin.register(Car)
