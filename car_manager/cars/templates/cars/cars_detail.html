@@ -17,6 +17,7 @@
         <a class="button-link" href="{% url 'cars:cars_list' %}">Back</a>
       </button>
 
+      {% if object.owner == request.user %}
       <button type="submit" class="btn btn-primary">
         <a class="button-link" href="{% url 'cars:cars_update' pk=object.pk %}">Update</a>
       </button>
@@ -24,6 +25,7 @@
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Delete
       </button>
+      {% endif %}
 
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">
         Add comment
@@ -47,7 +49,7 @@
               <button type="submit" class="btn btn-primary btn-sm">Delete</button>
             </form>
             <button type="button" class="btn btn-primary btn-sm d-flex-btn" data-bs-toggle="modal"
-              data-bs-target="#updateCommentModal" data-comment-content="{{ comment.content }}" 
+              data-bs-target="#updateCommentModal" data-comment-content="{{ comment.content }}"
               data-comment-id="{{ comment.pk }}">
               Update
             </button>
@@ -181,15 +183,15 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const updateCommentModal = document.getElementById('updateCommentModal');
-    
-    updateCommentModal.addEventListener('show.bs.modal', function(event) {
-      const button = event.relatedTarget; 
-      
+
+    updateCommentModal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+
       const commentContent = button.getAttribute('data-comment-content');
       const commentId = button.getAttribute('data-comment-id');
-  
+
       const textarea = updateCommentModal.querySelector('#exampleTextarea');
       textarea.value = commentContent;
 
@@ -197,6 +199,6 @@
       form.action = '{% url "cars:comments_cars_update" pk=0 %}'.replace('0', commentId);
     });
   });
-  </script>
+</script>
 
 {% endblock body %}

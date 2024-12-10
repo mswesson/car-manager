@@ -6,7 +6,10 @@ Cars
 
 {% block body %}
 <h1>Cars</h1>
-<div class="btn-logout">
+<div class="btn-logout d-flex">
+  <button type="button" class="btn btn-primary">
+    <a class="button-link" href="{% url 'cars:cars_create' %}">Add car</a>
+  </button>
   <form action="{% url 'myauth:logout' %}" method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-primary">Logout</button>

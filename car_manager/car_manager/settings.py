@@ -89,11 +89,11 @@ WSGI_APPLICATION = "car_manager.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),  # Имя базы данных
-        "USER": os.getenv("POSTGRES_USER"),  # Имя пользователя
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),  # Пароль пользователя
-        "HOST": "127.0.0.1",  # Хост
-        "PORT": "5432",  # Порт
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": "db",
+        "PORT": "5432",
     }
 }
 

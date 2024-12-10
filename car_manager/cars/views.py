@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import (
     ListView,
     CreateView,
@@ -7,10 +6,9 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.urls import reverse_lazy
 from django.http import Http404
-from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 
 from .models import Car, CarComment
@@ -19,7 +17,7 @@ from .forms import CarForm, CommentCarForm
 # Car
 
 
-class CarsListView(LoginRequiredMixin, ListView):
+class CarsListView(ListView):
     model = Car
     template_name = "cars/cars_list.html"
     paginate_by = 9
@@ -38,7 +36,7 @@ class CarsCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class CarsDetailView(LoginRequiredMixin, DetailView):
+class CarsDetailView(DetailView):
     model = Car
     template_name = "cars/cars_detail.html"
 
@@ -60,6 +58,14 @@ class CarsUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "cars/cars_update.html"
     form_class = CarForm
 
+    def dispatch(self, request, *args, **kwargs):
+        car = self.get_object()
+
+        if car.owner != request.user:
+            return HttpResponseForbidden()
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy("cars:cars_detail", kwargs={"pk": self.object.pk})
 
@@ -67,6 +73,14 @@ class CarsUpdateView(LoginRequiredMixin, UpdateView):
 class CarsDeleteView(LoginRequiredMixin, DeleteView):
     model = Car
     success_url = reverse_lazy("cars:cars_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        car = self.get_object()
+
+        if car.owner != request.user:
+            return HttpResponseForbidden()
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 # CarComment
@@ -104,14 +118,24 @@ class CarCommentDeleteView(LoginRequiredMixin, DeleteView):
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         object = self.get_object()
+
         if request.user != object.author:
-            raise PermissionDenied()
+            raise HttpResponseForbidden()
+
         return super().post(request, *args, **kwargs)
 
 
 class CarCommentsUpdateView(LoginRequiredMixin, UpdateView):
     model = CarComment
     form_class = CommentCarForm
+
+    def dispatch(self, request, *args, **kwargs):
+        car = self.get_object()
+
+        if car.owner != request.user:
+            return HttpResponseForbidden()
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy(

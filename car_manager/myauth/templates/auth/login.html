@@ -32,8 +32,14 @@
       </div>
       {% endif %}
     </div>
-
-    <button type="submit" class="btn btn-primary">Register</button>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
   </form>
+
+  <div style="margin: 20px 0;">
+    <p>If you are not registered then register - <a href="{% url 'myauth:register' %}">Register</a></p>  
+  </div>
+
 </div>
 {% endblock body %}

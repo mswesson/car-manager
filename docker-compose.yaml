@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/car_manager/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      dockerfile: ./Dockerfile
+    command: >
+      sh -c "python manage.py migrate &&
+             gunicorn car_manager.wsgi:application --bind 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - static_data:/app/staticfiles
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_data:/usr/share/nginx/html/car_manager/static
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+  static_data:
