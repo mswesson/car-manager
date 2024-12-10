@@ -10,7 +10,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True,
         style={"input_type": "password"},
-        help_text="Пароль должен соответствовать требованиям безопасности.",
+        help_text="The password must comply with security requirements",
     )
 
     class Meta:

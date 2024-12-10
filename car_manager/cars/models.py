@@ -45,6 +45,10 @@ class Car(models.Model):
             return self.description
         return self.description[:155] + "..."
 
+    def __str__(self):
+        title = f"{self.make} {self.model} ({self.year})"
+        return title
+
 
 class CarComment(models.Model):
     """
@@ -70,3 +74,7 @@ class CarComment(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+    def __str__(self):
+        title = f"{self.author.username}'s comment on car #{self.car.id}"
+        return title
