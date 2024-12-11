@@ -40,7 +40,9 @@ class Car(models.Model):
     class Meta:
         ordering = ["-created_at"]
 
-    def description_short(self):
+    def description_short(self) -> str | None:
+        if self.description is None:
+            return self.description
         if len(self.description) <= 155:
             return self.description
         return self.description[:155] + "..."
@@ -76,5 +78,5 @@ class CarComment(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        title = f"{self.author.username}'s comment on car #{self.car.id}"
+        title = f"{self.author.username}'s comment on car #{self.car.pk}"
         return title
