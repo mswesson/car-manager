@@ -1,9 +1,4 @@
-{% extends "cars/base.html" %}
-
-{% block title %}
-  Register
-{% endblock title %}
-
+{% extends "cars/base.html" %} {% block title %} Register {% endblock title %}
 {% block body %}
 <h1>User registration</h1>
 
@@ -13,23 +8,31 @@
 
     <div class="mb-3">
       <label class="form-label">Username</label>
-      <input name="username" type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="username"
-        placeholder="Enter username" value="{{ form.username.value|default:'' }}">
+      <input
+        name="username"
+        type="text"
+        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+        id="username"
+        placeholder="Enter username"
+        value="{{ form.username.value|default:'' }}"
+      />
       {% if form.username.errors %}
-      <div class="invalid-feedback">
-        {{ form.username.errors.0 }}
-      </div>
+      <div class="invalid-feedback">{{ form.username.errors.0 }}</div>
       {% endif %}
     </div>
 
     <div class="mb-3">
       <label class="form-label">Password</label>
-      <input name="password" type="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" id="password"
-        placeholder="Enter password" value="{{ form.password.value|default:'' }}">
+      <input
+        name="password"
+        type="password"
+        class="form-control {% if form.password.errors %}is-invalid{% endif %}"
+        id="password"
+        placeholder="Enter password"
+        value="{{ form.password.value|default:'' }}"
+      />
       {% if form.password.errors %}
-      <div class="invalid-feedback">
-        {{ form.password.errors.0 }}
-      </div>
+      <div class="invalid-feedback">{{ form.password.errors.0 }}</div>
       {% endif %}
     </div>
     <div class="d-flex justify-content-center">
@@ -37,8 +40,11 @@
     </div>
   </form>
 
-  <div style="margin: 20px 0;">
-    <p>If you already have an account, then log in - <a href="{% url 'myauth:login' %}">Login</a></p>  
+  <div style="margin: 20px 0">
+    <p>
+      If you already have an account, then
+      <a href="{% url 'myauth:login' %}">login</a>
+    </p>
   </div>
 </div>
 {% endblock body %}
